@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "tsx scripts/generate-priority-json.ts && next build",
+    "generate-priority-json": "tsx scripts/generate-priority-json.ts",
     "start": "next start",
     "clean": "pnpm biome check --write",
     "update": "pnpm update --latest --recursive && pnpm install && pnpm prune && pnpm dedupe && pnpm run clean",

@@ -25,6 +25,22 @@ interface PriorityItem {
   is_checked: number;
 }
 
+const LS_KEY = 'priority-items-checked';
+
+function loadCheckedIds(): Set<number> {
+  if (typeof window === 'undefined') return new Set();
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    return raw ? new Set(JSON.parse(raw) as number[]) : new Set();
+  } catch {
+    return new Set();
+  }
+}
+
+function saveCheckedIds(ids: Set<number>) {
+  localStorage.setItem(LS_KEY, JSON.stringify(Array.from(ids)));
+}
+
 export default function PriorityMatrixClient() {
   const [items, setItems] = useState<PriorityItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -32,38 +48,32 @@ export default function PriorityMatrixClient() {
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
   useEffect(() => {
-    fetchItems();
+    fetch('/priority-items.json')
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to load priority items');
+        return res.json() as Promise<PriorityItem[]>;
+      })
+      .then(data => {
+        const checkedIds = loadCheckedIds();
+        setItems(data.map(item => ({
+          ...item,
+          is_checked: checkedIds.has(item.id) ? 1 : 0,
+        })));
+      })
+      .catch(err => setError(err instanceof Error ? err.message : 'An error occurred'))
+      .finally(() => setLoading(false));
   }, []);
 
-  const fetchItems = async () => {
-    try {
-      const response = await fetch('/api/priority-items');
-      if (!response.ok) throw new Error('Failed to fetch priority items');
-      const data = await response.json();
-      setItems(data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const toggleItem = async (id: number, currentStatus: number) => {
-    try {
-      const response = await fetch(`/api/priority-items/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ is_checked: currentStatus === 1 ? 0 : 1 }),
-      });
-
-      if (!response.ok) throw new Error('Failed to update item');
-
-      setItems(items.map(item =>
-        item.id === id ? { ...item, is_checked: currentStatus === 1 ? 0 : 1 } : item
-      ));
-    } catch (err) {
-      console.error('Error toggling item:', err);
-    }
+  const toggleItem = (id: number, currentStatus: number) => {
+    const newStatus = currentStatus === 1 ? 0 : 1;
+    setItems(prev => {
+      const updated = prev.map(item =>
+        item.id === id ? { ...item, is_checked: newStatus } : item
+      );
+      const checkedIds = new Set(updated.filter(i => i.is_checked === 1).map(i => i.id));
+      saveCheckedIds(checkedIds);
+      return updated;
+    });
   };
 
   const getTechnicalCategoryConfig = (category: string) => {
