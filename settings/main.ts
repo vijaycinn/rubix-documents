@@ -1,21 +1,21 @@
-export const url = 'https://rubix-documents.vercel.app'
+export const url = 'https://cjn-dakota-docs.vercel.app'
 export const siteicon = '/icon.png'
 
 export const gtm = 'GTM-XXXXXXX'
-export const gtmconnected = true
+export const gtmconnected = false
 
-export const sitename = 'Documents'
+export const sitename = 'CJN Dakota RMS - Microsoft WAF Recommendations'
 export const description =
-  'This comprehensive documentation template, crafted with Next.js and available as open-source, delivers a sleek and responsive design, tailored to meet all your project documentation requirements.'
-export const keywords = ['Next.js', 'documentation', 'Rubix Studios', 'open source', 'SEO']
+  'Microsoft Well-Architected Framework (WAF) recommendations and architectural guidance for the CJN Dakota County Records Management System (RMS) modernization project. Includes Azure best practices, implementation roadmap, and interactive priority tracking.'
+export const keywords = ['Azure', 'RMS', 'CJN Dakota', 'Records Management', 'Architecture', 'CJIS Compliance', 'Microsoft WAF', 'Well-Architected Framework']
 export const urlimage = '/images/og-image.png'
-export const imagealt = 'Rubix Studios Documentation'
-export const twitterhandle = '@RubixStudios'
+export const imagealt = 'CJN Dakota County RMS Documentation'
+export const twitterhandle = '@CJNDakota'
 
-export const companyname = 'Rubix Studios'
-export const companylink = 'https://rubixstudios.com.au'
+export const companyname = 'CJN Dakota County'
+export const companylink = 'https://www.co.dakota.mn.us/'
 
-export const branding = true
+export const branding = false
 export const rightsidebar = true
 export const feedbackedit = true
 export const tableofcontent = true

@@ -1,0 +1,73 @@
+---
+title: Priority Matrix
+description: Interactive implementation priority matrix for CJN Dakota County RMS modernization project
+keywords: ["priority", "implementation", "roadmap", "CJN Dakota"]
+---
+
+import PriorityMatrixClient from '@/components/priority-matrix-client';
+
+# Implementation Priority Matrix
+
+**Customer:** CJN Dakota County (Tim Anderberg, Nathan Noll)  
+**Project:** Azure RMS Modernization
+
+---
+
+## Overview
+
+This interactive priority matrix tracks the implementation progress of architectural recommendations for the CJN Dakota County Records Management System (RMS) modernization project.
+
+Check off items as they are completed. Your progress is automatically saved.
+
+---
+
+## Priority Categories
+
+The recommendations are organized into four priority levels based on business impact, compliance requirements, and implementation urgency:
+
+- 🔴 **CRITICAL PRIORITY (0-30 Days)** - Immediate action required for security, compliance, or business continuity
+- 🟠 **HIGH PRIORITY (30-60 Days)** - Important improvements with significant business value
+- 🟡 **MEDIUM PRIORITY (60-90 Days)** - Performance optimizations and cost management
+- 🟢 **LOW PRIORITY (90+ Days)** - Long-term improvements and advanced features
+
+---
+
+## Interactive Checklist
+
+<PriorityMatrixClient />
+
+---
+
+## Summary Metrics
+
+### Critical Priority Items
+- **Total Effort:** 10-11 person-weeks
+- **Calendar Time:** ~5-6 weeks (with 3 parallel work streams)
+- **Monthly Cost Impact:** +$450-500 + 15-25% for geo-replication
+- **Focus Areas:** Security, Compliance, Disaster Recovery
+
+### High Priority Items
+- **Total Effort:** 14-17 person-weeks
+- **Monthly Cost Impact:** +$300-600 + 10% infrastructure
+- **Focus Areas:** Enhanced security, Operational visibility, Performance
+
+### Medium Priority Items
+- **Focus Areas:** Advanced security, Cost optimization, Global performance
+
+### Low Priority Items
+- **Focus Areas:** Resilience testing, Hybrid management, Advanced cost optimization
+
+---
+
+## Related Documentation
+
+- [Architectural Analysis](/docs/architecture) - Detailed technical recommendations
+- [Implementation Guide](/docs/basic-setup) - Getting started with the platform
+
+---
+
+## Notes
+
+All changes to checkbox states are automatically persisted to the database. Your progress is saved in real-time and will be available the next time you visit this page.
+
+For questions about specific recommendations, refer to the detailed [Architectural Analysis](/docs/architecture) or contact the project team.

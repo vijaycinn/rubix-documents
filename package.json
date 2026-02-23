@@ -10,6 +10,7 @@
     "clean": "pnpm biome check --write",
     "update": "pnpm update --latest --recursive && pnpm install && pnpm prune && pnpm dedupe && pnpm run clean",
     "generate-content-json": "tsx scripts/content.ts",
+    "seed-db": "tsx scripts/seed-db.ts",
     "prepare": "husky"
   },
   "dependencies": {
@@ -23,6 +24,7 @@
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-tabs": "^1.1.13",
     "@tailwindcss/postcss": "^4.1.18",
+    "better-sqlite3": "^12.6.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "gray-matter": "^4.0.3",
@@ -52,6 +54,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.3.15",
     "@tailwindcss/typography": "^0.5.19",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/hast": "^3.0.4",
     "@types/node": "^25.2.3",
     "@types/react": "^19.2.14",

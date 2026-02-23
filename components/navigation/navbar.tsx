@@ -57,11 +57,8 @@ export function NavMenu({ isSheet = false }) {
             activeClassName="font-bold text-primary"
             className="flex items-center gap-1 text-sm"
             href={item.href}
-            target={item.external ? '_blank' : undefined}
-            rel={item.external ? 'noopener noreferrer' : undefined}
           >
-            {item.title}{' '}
-            {item.external && <LuArrowUpRight className="h-3 w-3 align-super" strokeWidth={3} />}
+            {item.title}
           </Anchor>
         )
         return isSheet ? (

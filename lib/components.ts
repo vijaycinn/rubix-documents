@@ -5,8 +5,10 @@ import RoutedLink from '@/components/markdown/link'
 import Mermaid from '@/components/markdown/mermaid'
 import Note from '@/components/markdown/note'
 import { Step, StepItem } from '@/components/markdown/step'
+import { ZoomableImage } from '@/components/markdown/zoomable-image'
 import Pre from '@/components/ui/pre'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import PriorityMatrixClient from '@/components/priority-matrix-client'
 
 export const components = {
   a: RoutedLink,
@@ -24,4 +26,6 @@ export const components = {
   TabsContent,
   TabsList,
   TabsTrigger,
+  ZoomableImage,
+  PriorityMatrixClient,
 }
