@@ -6,9 +6,9 @@ keywords: ["architecture", "azure", "well-architected", "recommendations", "CJN 
 
 # CJN Dakota County - RMS Architecture
 
-**Date:** February 20, 2026
+**Date:** March 2, 2026
 **Customer:** CJN Dakota County (Tim Anderberg, Nathan Noll)
-**Project:** Records Management System (RMS) on Azure Commercial GCC
+**Project:** Records Management System (RMS) on Azure Government Cloud
 
 ---
 
@@ -54,7 +54,7 @@ keywords: ["architecture", "azure", "well-architected", "recommendations", "CJN 
 
 ### Architecture Analysis
 
-The system architecture diagram above illustrates the complete Azure-based Records Management System deployed in Azure Commercial GCC to meet CJIS compliance requirements. This topology represents a mature microservices architecture with clear separation of concerns across four distinct resource groups, each serving a specific domain within the RMS ecosystem.
+The system architecture diagram above illustrates the complete Azure-based Records Management System deployed in Azure Government Cloud to meet CJIS compliance requirements. This topology represents a mature microservices architecture with clear separation of concerns across four distinct resource groups, each serving a specific domain within the RMS ecosystem.
 
 **Resource Group Separation Strategy:** The architecture implements a rigorous isolation model with dedicated resource groups for **RMS Core** (case management and core record operations), **Routing Services** (external system integration and message distribution), **Search Services** (indexing and query operations), and **Shared Infrastructure** (SQL Database, Key Vault, Service Bus Premium). This separation enables independent lifecycle management, granular RBAC assignments, and blast radius containment in the event of a security incident or operational failure.
 
