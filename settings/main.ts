@@ -1,4 +1,4 @@
-export const url = 'https://cjn-dakota-docs.vercel.app'
+export const url = 'https://purple-cliff-0ce33a60f.6.azurestaticapps.net'
 export const siteicon = '/icon.png'
 
 export const gtm = 'GTM-XXXXXXX'
