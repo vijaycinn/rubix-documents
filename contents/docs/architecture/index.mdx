@@ -12,6 +12,14 @@ keywords: ["architecture", "azure", "well-architected", "recommendations", "CJN 
 
 ---
 
+<Note type="info" title="Azure Cloud Terminology Clarification">
+Microsoft offers two distinct Azure cloud platforms: **Azure Commercial** (also called Azure Global or Azure Public) and **Azure for US Government** (also called Azure Government). There is no Microsoft product called "Azure GCC" or "Azure Commercial GCC" — this is a common source of confusion because "GCC" does not indicate which Azure platform is being used. The designation "GCC" refers to a Microsoft 365 Government Community Cloud tenant, which can be paired with either Azure Commercial or Azure Government.
+
+For CJIS-regulated workloads, the choice between Azure Commercial and Azure Government has direct compliance implications. Azure Government enforces US citizenship screening for Microsoft personnel who may access customer data, which can make certain technical controls (such as Customer-Managed Keys) a **recommendation** rather than a **requirement**. On Azure Commercial, the absence of that personnel screening may elevate some controls — including CMK — from recommended to **required** depending on State-level CJIS policy interpretation. CJN Dakota should confirm with the MN DPS/BCA which platform and personnel screening baseline applies to their deployment.
+
+Reference: [Azure support for public safety and justice (Azure Government)](https://learn.microsoft.com/en-us/azure/azure-government/documentation-government-overview-jps)
+</Note>
+
 ## Executive Summary
 
 <Note type="warning" title="High-Risk Items Requiring Immediate Attention">
@@ -91,7 +99,7 @@ For detailed capability mapping, refer to the **Key Capabilities** table below. 
 
 | Capability | Description |
 |-----------|-------------|
-| **Secure Data Management** | CJIS-compliant encryption at rest/transit, immutable audit logs, data residency in Azure GCC |
+| **Secure Data Management** | CJIS-compliant encryption at rest/transit, immutable audit logs, data residency in Azure Government |
 | **Real-Time Operations** | SignalR Hub + Service Bus for live officer notifications and event-driven processing |
 | **Enterprise Integration** | 9+ external systems (MNCIS, NIBRS, eCitations, eCharging, MNCrash, MAARC, DPS, Hennepin, LOGIS) |
 | **Business Continuity** | SQL geo-replication, automated backup, point-in-time restore, documented DR |
@@ -515,10 +523,19 @@ For detailed partner-specific protocols and data formats, refer to the **Externa
 | **Application** | JWT Validation | 5.5.2 | Implemented |
 | **Application** | Rate Limiting | 5.10.4 | Implemented |
 | **Compute** | Managed Identities | 5.6.1 | Recommended |
-| **Data** | TDE + CMK | 5.10.1 | Recommended |
+| **Data** | TDE + CMK (SQL) | 5.10.1 | Recommended† |
+| **Data** | CMK (Blob Storage) | 5.10.1 | Not Assessed |
 | **Data** | Always Encrypted | 5.10.1 | Recommended |
 | **Monitoring** | Sentinel SIEM | 5.4.1 | Recommended |
 | **Monitoring** | Audit Logging (7 yr) | 5.4 | Partial |
+
+<Note type="warning" title="† TDE + CMK: Recommended vs. Required Depends on Cloud Platform">
+**Azure Government:** CMK is Recommended — Azure Government's built-in US citizenship screening for Microsoft personnel provides a baseline personnel security control that satisfies many CJIS requirements without mandating CMK.
+
+**Azure Commercial:** CMK may be **Required** rather than Recommended. Azure Commercial does not enforce the same US citizenship screening, meaning technical controls like CMK (and Confidential Compute enclaves for encryption in-use) may become necessary compensating controls to meet CJIS 5.10.1. **CJN Dakota must determine whether MN State-level CJIS requirements change CMK from recommended to required for their chosen cloud platform.** Microsoft cannot make this determination on the customer's behalf.
+
+**Blob Storage CMK scope:** The current architecture documents CMK for SQL Database (TDE) but does not explicitly confirm whether Azure Blob Storage (used for case documents and audit log archival) will also have CMK applied. This should be clarified — if Blob stores CJI data, CMK is subject to the same Commercial vs. Government CMK determination above.
+</Note>
 
 ### Security Recommendations
 
@@ -531,7 +548,8 @@ For detailed partner-specific protocols and data formats, refer to the **Externa
     | Recommendation | Current State | Target State | Effort | CJIS Ref |
     |---------------|-------------|-------------|--------|----------|
     | **Managed Identities** | Credentials in Key Vault | System Assigned MI everywhere | 2-3 weeks | 5.10 |
-    | **TDE with CMK** | Default encryption | Customer-managed keys via KV Premium | 2 weeks | 5.10.1 |
+    | **TDE with CMK (SQL)** | Default encryption | Customer-managed keys via KV Premium | 2 weeks | 5.10.1 |
+    | **CMK (Blob Storage)** | Platform-managed keys | Customer-managed keys for CJI blob containers | 1-2 weeks | 5.10.1 |
     | **Private Link** | Public endpoints + firewall | No public endpoints | 3-4 weeks | 5.5.4 |
     | **Always Encrypted** | At-rest encryption only | Column-level PII encryption | 3 weeks | 5.10 |
     | **SQL Audit Logs** | Basic monitoring | Immutable storage, 7-year retention | 1 week | 5.4 |
@@ -618,7 +636,7 @@ For detailed partner-specific protocols and data formats, refer to the **Externa
 | **5.7/5.10.4 Configuration Management** | MISSING | High | Baseline configs, change control |
 | **5.15 System Integrity** | MISSING | High | Vulnerability scanning, integrity monitoring |
 | **Customer Lockbox** | MISSING | High | Control Microsoft engineer access |
-| **Azure Policy CJIS Initiative** | MISSING | Medium | Deploy built-in CJIS compliance policies |
+| **Azure Policy Compliance** | MISSING | Medium | Deploy NIST SP 800-53 and FedRAMP Moderate Azure Policy initiatives — no pre-built CJIS initiative exists; use [FBI CJIS-to-NIST 800-53 mapping](https://www.fbi.gov/file-repository/cjis/csp-v5_5-to-nist-controls-mapping-1.pdf) to validate coverage |
 | **5.1 Information Exchange Agreements** | MISSING | Medium | Formal agreements with external systems |
 | **5.3 Incident Response** | Partial | Medium | Formal plan with exercise schedule |
 
@@ -1149,9 +1167,11 @@ The Azure DevOps CI/CD pipeline diagram illustrates the comprehensive continuous
 
 - [Azure Well-Architected Framework](https://learn.microsoft.com/azure/architecture/framework/)
 - [CJIS Compliance in Azure](https://learn.microsoft.com/azure/compliance/offerings/offering-cjis)
+- [Azure support for public safety and justice (Azure Government)](https://learn.microsoft.com/en-us/azure/azure-government/documentation-government-overview-jps)
 - [Azure Security Baseline](https://learn.microsoft.com/security/benchmark/azure/)
 - [AVM Bicep Registry Index](https://azure.github.io/Azure-Verified-Modules/indexes/bicep/)
+- [FBI CJIS Security Policy to NIST 800-53 Control Mapping](https://www.fbi.gov/file-repository/cjis/csp-v5_5-to-nist-controls-mapping-1.pdf)
 
 ---
 
-*Last Updated: February 22, 2026*
+*Last Updated: March 2, 2026*
